@@ -5,7 +5,7 @@ from keras.datasets import mnist
 from keras.utils import to_categorical
 from keras.optimizers import SGD
 import matplotlib.pyplot as plt
-
+import numpy   as    np
 
 #Load Data
 (x_train,y_train),(x_test,y_test)=mnist.load_data()
@@ -26,7 +26,7 @@ model.add(Dense(units=10,activation='softmax'))
 model.compile(optimizer='adam',loss='categorical_crossentropy',metrics=['accuracy'])
 
 #Train
-result=model.fit(x_train,y_train,epochs=50,batch_size=32,validation_data=(x_test,y_test))
+result=model.fit(x_train,y_train,epochs=2,batch_size=32,validation_data=(x_test,y_test))
 print(result.history.keys())
 print(result.history.items())
 
@@ -34,6 +34,17 @@ print(result.history.items())
 loss,accuracy=model.evaluate(x_test,y_test)
 print(f"test loss:{loss},\ntest_accuracy:{accuracy}")
 
+#predict
+predications=model.predict(x_test)
+predict_label=np.argmax(predications,axis=1)
+print(f"predicted label:{predict_label[1]}")
+#print the prediction
+plt.title("Image")
+for i in range(5):
+    plt.subplot(1,5,i+1)
+    plt.imshow(x_test[i])
+    plt.title(i)
+plt.show()
 #Visualization
 plt.plot(result.history['loss'],label='train loss',color='blue')
 plt.plot(result.history['val_loss'],label='valdation loss',color='red')
